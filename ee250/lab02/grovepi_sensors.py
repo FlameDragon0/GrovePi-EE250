@@ -3,7 +3,7 @@
 List team members here.
 
 Insert Github repository link here.
-"""
+""" #git@github.com:FlameDragon0/GrovePi-EE250.git
 
 """python3 interpreters in Ubuntu (and other linux distros) will look in a 
 default set of directories for modules when a program tries to `import` one. 
@@ -28,11 +28,26 @@ import grovepi
 is, if you run `python3 grovepi_sensors.py` in terminal, this if-statement will 
 be true"""
 if __name__ == '__main__':
-    PORT = 4    # D4
+    ultrasonic = 4    # D4
+    rotary = 0 #A0
+    #grovepi.pinMode(rotary,"INPUT")
 
     while True:
         #So we do not poll the sensors too quickly which may introduce noise,
         #sleep for a reasonable time of 200ms between each iteration.
         time.sleep(0.2)
 
-        print(grovepi.ultrasonicRead(PORT))
+        # Read sensor value from rotary angle sensor
+        rotary_value = grovepi.analogRead(rotary)/2
+        print(rotary_value)
+
+        # Read sensor value from ultrasonic ranger
+        ultrasonic_value = grovepi.ultrasonicRead(ultrasonic)
+        print(ultrasonic_value)
+
+        if ultrasonic_value > rotary_value:
+          print("No Object Present")
+        else:
+          print("OBJ PRES")
+
+        #print(grovepi.ultrasonicRead(ultrasonic))
