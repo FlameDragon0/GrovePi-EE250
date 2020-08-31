@@ -101,7 +101,7 @@ if __name__ == '__main__':
           printText += " "
         printText += str(int(rotary_value)) + "cm"
 
-        if ultrasonic_value < rotary_value: # Checks if an object is within the threshold value
+        if ultrasonic_value <= rotary_value: # Checks if an object is within the threshold value
           printText += " OBJ PRES"
           setRGB(255,0,0) # sets screen color to red
         else:
