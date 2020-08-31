@@ -95,7 +95,9 @@ if __name__ == '__main__':
         # Read sensor value from ultrasonic ranger
         ultrasonic_value = grovepi.ultrasonicRead(ultrasonic)
 
-        if rotary_value < 100: # Indenting the rotary value
+        if rotary_value < 10: # Indenting the rotary value
+          printText += "  "
+        elif rotary_value < 100:
           printText += " "
         printText += str(int(rotary_value)) + "cm"
 
@@ -105,7 +107,9 @@ if __name__ == '__main__':
         else:
           setRGB(0,255,0) # sets screen color to green
         
-        if ultrasonic_value < 100: # Indenting the ultrasonic value
+        if ultrasonic_value < 10: # Indenting the ultrasonic value
+          printText += "\n  "
+        elif ultrasonic_value < 100:
           printText += "\n "
         else:
           printText += "\n"
