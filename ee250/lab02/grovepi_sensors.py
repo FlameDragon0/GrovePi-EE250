@@ -24,6 +24,44 @@ sys.path.append('../../Software/Python/grove_rgb_lcd')
 
 import grovepi
 
+# I2C addresses used by the LCD
+DISPLAY_RGB_ADDR = 0x62
+DISPLAY_TEXT_ADDR = 0x3e
+
+# set backlight to (R,G,B) (values from 0..255 for each) [Function copied from grove_rgb_lcd.py]
+def setRGB(r,g,b):
+    bus.write_byte_data(DISPLAY_RGB_ADDR,0,0)
+    bus.write_byte_data(DISPLAY_RGB_ADDR,1,0)
+    bus.write_byte_data(DISPLAY_RGB_ADDR,0x08,0xaa)
+    bus.write_byte_data(DISPLAY_RGB_ADDR,4,r)
+    bus.write_byte_data(DISPLAY_RGB_ADDR,3,g)
+    bus.write_byte_data(DISPLAY_RGB_ADDR,2,b)
+
+# send command to display (no need for external use) [Function copied from grove_rgb_lcd.py]   
+def textCommand(cmd):
+    bus.write_byte_data(DISPLAY_TEXT_ADDR,0x80,cmd)
+
+# set display text \n for second line(or auto wrap) [Function copied from grove_rgb_lcd.py]    
+def setText(text):
+    textCommand(0x01) # clear display
+    time.sleep(.05)
+    textCommand(0x08 | 0x04) # display on, no cursor
+    textCommand(0x28) # 2 lines
+    time.sleep(.05)
+    count = 0
+    row = 0
+    for c in text:
+        if c == '\n' or count == 16:
+            count = 0
+            row += 1
+            if row == 2:
+                break
+            textCommand(0xc0)
+            if c == '\n':
+                continue
+        count += 1
+        bus.write_byte_data(DISPLAY_TEXT_ADDR,0x40,ord(c))
+
 """This if-statement checks if you are running this python file directly. That 
 is, if you run `python3 grovepi_sensors.py` in terminal, this if-statement will 
 be true"""
@@ -31,6 +69,7 @@ if __name__ == '__main__':
     ultrasonic = 4    # D4
     rotary = 0 #A0
     #grovepi.pinMode(rotary,"INPUT")
+    printText = ""
 
     while True:
         #So we do not poll the sensors too quickly which may introduce noise,
@@ -39,15 +78,25 @@ if __name__ == '__main__':
 
         # Read sensor value from rotary angle sensor
         rotary_value = grovepi.analogRead(rotary)/2
-        print(rotary_value)
+        rotary_value += rotary_value%1 #remove decimals by rounding up
 
         # Read sensor value from ultrasonic ranger
         ultrasonic_value = grovepi.ultrasonicRead(ultrasonic)
-        print(ultrasonic_value)
+
+        if rotary_value < 100: # Indenting the rotary value
+          printText += " "
+        printText += str(rotary_value) + "cm"
 
         if ultrasonic_value > rotary_value:
-          print("No Object Present")
+          printText += " OBJ PRES"
+          setRGB(255,0,0) # sets screen color to red
         else:
-          print("OBJ PRES")
+          setRGB(0,255,0) # sets screen color to green
+        
+        if ultrasonic_value < 100: # Indenting the ultrasonic value
+          printText += "\n " + str(ultrasonic_value) + "cm"
+        else:
+          printText += "\n" + str(ultrasonic_value) + "cm"
 
-        #print(grovepi.ultrasonicRead(ultrasonic))
+        setText(printText) # Prints text on LCD
+
