@@ -24,6 +24,18 @@ sys.path.append('../../Software/Python/grove_rgb_lcd')
 
 import grovepi
 
+if sys.platform == 'uwp': # If statements used by the LCD [Statements copied from grove_rgb_lcd.py]
+    import winrt_smbus as smbus
+    bus = smbus.SMBus(1)
+else:
+    import smbus
+    import RPi.GPIO as GPIO
+    rev = GPIO.RPI_REVISION
+    if rev == 2 or rev == 3:
+        bus = smbus.SMBus(1)
+    else:
+        bus = smbus.SMBus(0)
+
 # I2C addresses used by the LCD
 DISPLAY_RGB_ADDR = 0x62
 DISPLAY_TEXT_ADDR = 0x3e
