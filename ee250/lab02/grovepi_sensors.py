@@ -90,25 +90,25 @@ if __name__ == '__main__':
 
         # Read sensor value from rotary angle sensor
         rotary_value = grovepi.analogRead(rotary)/2
-        rotary_value += rotary_value%1 #remove decimals by rounding up
 
         # Read sensor value from ultrasonic ranger
         ultrasonic_value = grovepi.ultrasonicRead(ultrasonic)
 
         if rotary_value < 100: # Indenting the rotary value
           printText += " "
-        printText += str(rotary_value) + "cm"
+        printText += str(int(rotary_value)) + "cm"
 
-        if ultrasonic_value > rotary_value:
+        if ultrasonic_value < rotary_value: # Checks if an object is within the threshold value
           printText += " OBJ PRES"
           setRGB(255,0,0) # sets screen color to red
         else:
           setRGB(0,255,0) # sets screen color to green
         
         if ultrasonic_value < 100: # Indenting the ultrasonic value
-          printText += "\n " + str(ultrasonic_value) + "cm"
+          printText += "\n "
         else:
-          printText += "\n" + str(ultrasonic_value) + "cm"
+          printText += "\n"
+        printText += str(int(ultrasonic_value)) + "cm"
 
         setText(printText) # Prints text on LCD
 
