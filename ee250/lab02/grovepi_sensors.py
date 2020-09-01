@@ -104,9 +104,10 @@ if __name__ == '__main__':
         printText += str(int(rotary_value)) + "cm"
 
         if ultrasonic_value <= rotary_value: # Checks if an object is within the threshold value
-          printText += " OBJ PRES"
+          printText += " OBJ PRES" # Show message when object is present within threshold range
           setRGB(255,0,0) # sets screen color to red
         else:
+          printText += "         " # Erase OBJ PRES if it was there previously
           setRGB(0,255,0) # sets screen color to green
         
         if ultrasonic_value < 10: # Indenting the ultrasonic value
