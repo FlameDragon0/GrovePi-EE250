@@ -10,8 +10,8 @@ import socket
 def main():
     
     # TODO: Create a socket and connect it to the server at the designated IP and port
-    HOST = "34.209.114.30"
-    #HOST = "52.88.20.156"
+    #HOST = "34.209.114.30" 
+    HOST = "3.18.108.134" #My AWS IP addres
     PORT = 5008
     
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s: # AF_INET tells the program that it will use IPv4, and SOCK_STREAM says that the connection will use TCP protocol
