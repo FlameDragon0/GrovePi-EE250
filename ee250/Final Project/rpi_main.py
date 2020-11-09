@@ -33,20 +33,20 @@ def on_message(client, userdata, msg):
     print("on_message: " + msg.topic + " " + str(msg.payload, "utf-8"))
 
 
-def get_mood_info(mood_info):
-    if mood_info == 0:
+def get_mood_info(): # Do the lighting functions + call them here!
+    if mood == 0:
         return "No Custom Mood"
-    elif mood_info == 1:
+    elif mood == 1:
         return "Movie Mood"
-    elif mood_info == 2:
+    elif mood == 2:
         return "Party Mood"
-    elif mood_info == 3:
+    elif mood == 3:
         return "Conference Mood"
-    elif mood_info == 4:
+    elif mood == 4:
         return "Relaxing Mood"
 
-def update_LCD(num_people, mood_info):
-    text = "People: " + str(num_people) + "\n" + get_mood_info(mood_info)
+def update_LCD():
+    text = "People: " + str(people) + "\n" + get_mood_info
     grove_rgb_lcd.setText(text)
 
 
@@ -77,7 +77,7 @@ while True:
         update_LCD(people, mood)
     else:
         time_blocked = 0 # If not, then we don't count as someone went through the doorway.
-    
+
     clock += 1
     time.sleep(0.05) # Sleep for 50ms
 
