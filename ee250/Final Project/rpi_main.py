@@ -39,16 +39,17 @@ if __name__ == '__main__':
     client.on_connect = on_connect
     client.connect(host="eclipse.usc.edu", port=11000, keepalive=60) # Connected to USC's MQTT server
     client.loop_start()
+    
+    grove_rgb_lcd.setText_norefresh("People: 0\nNo Custom Mood")
+    grove_rgb_lcd.setRGB(255, 255, 255)
 
 while True:
-    if clock == 50: # Publish every 0.05 x 100 = 5 seconds
+    if clock == 100: # Publish every 0.05 x 100 = 5 seconds
         clock = 0
         client.publish("chenjosh/people", str(people))
         client.publish("chenjosh/mood", str(mood))
         #publish
     
-    text = "People: " + str(people) + "\nNo Custom Mood"
-    grove_rgb_lcd.setText_norefresh(text)
 
     ultrasonic_value = grovepi.ultrasonicRead(ultrasonic_port)
 
@@ -61,6 +62,6 @@ while True:
         time_blocked = 0 # If not, then we don't count as someone went through the doorway.
     
     clock += 1
-    time.sleep(0.05) # Sleep for 0.1 seconds
+    time.sleep(0.05) # Sleep for 50ms
 
 
