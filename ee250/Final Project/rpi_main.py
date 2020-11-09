@@ -19,7 +19,7 @@ button_port = 0 # D0
 def customMood(client, userdata, mood_message):
     mood_payload = str(mood_message.payload, "utf-8")
     mood = int(mood_payload)
-    update_LCD
+    update_LCD(people, mood)
 
 def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
@@ -33,20 +33,20 @@ def on_message(client, userdata, msg):
     print("on_message: " + msg.topic + " " + str(msg.payload, "utf-8"))
 
 
-def get_mood_info(): # Do the lighting functions + call them here!
-    if mood == 0:
+def get_mood_info(mood_info): # Do the lighting functions + call them here!
+    if mood_info == 0:
         return "No Custom Mood"
-    elif mood == 1:
+    elif mood_info == 1:
         return "Movie Mood"
-    elif mood == 2:
+    elif mood_info == 2:
         return "Party Mood"
-    elif mood == 3:
+    elif mood_info == 3:
         return "Conference Mood"
-    elif mood == 4:
+    elif mood_info == 4:
         return "Relaxing Mood"
 
-def update_LCD():
-    text = "People: " + str(people) + "\n" + get_mood_info
+def update_LCD(num_people, mood_info):
+    text = "People: " + str(num_people) + "\n" + get_mood_info(mood_info)
     grove_rgb_lcd.setText(text)
 
 
@@ -74,7 +74,7 @@ while True:
     elif time_blocked > 3: # If something blocks the doorway for 0.2s or more, then we assume that a person did go through
         people += 1
         time_blocked = 0
-        update_LCD
+        update_LCD(people, mood)
     else:
         time_blocked = 0 # If not, then we don't count as someone went through the doorway.
 
