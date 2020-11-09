@@ -32,7 +32,7 @@ def on_message(client, userdata, msg):
     print("on_message: " + msg.topic + " " + str(msg.payload, "utf-8"))
 
 
-def get_mood_info()
+def get_mood_info():
     if mood == 0:
         return "No Custom Mood"
     elif mood == 1:
