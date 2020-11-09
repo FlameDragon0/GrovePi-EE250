@@ -16,7 +16,7 @@ led_port = 3
 button_port = 0 # D0
 
 
-def mode(client, userdata, mood_message):
+def customMood(client, userdata, mood_message):
     mood_payload = str(mood_message.payload, "utf-8")
     mood = int(mood_payload)
 
@@ -24,13 +24,29 @@ def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
 
     # Subscribed topics
-    client.subscribe("chenjosh/customMode")
-    client.message_callback_add("chenjosh/customMode", mode)
+    client.subscribe("chenjosh/customMood")
+    client.message_callback_add("chenjosh/customMood", mode)
 
 # Default message callback.
 def on_message(client, userdata, msg):
     print("on_message: " + msg.topic + " " + str(msg.payload, "utf-8"))
 
+
+def get_mood_info()
+    if mood == 0:
+        return "No Custom Mood"
+    elif mood == 1:
+        return "Movie Mood"
+    elif mood == 2:
+        return "Party Mood"
+    elif mood == 3:
+        return "Conference Mood"
+    elif mood == 4:
+        return "Relaxing Mood"
+
+def update_LCD():
+    text = "People: " + People + "\n" + get_mood_info
+    grove_rgb_lcd.setText(text)
 
 
 if __name__ == '__main__':
@@ -40,8 +56,8 @@ if __name__ == '__main__':
     client.connect(host="eclipse.usc.edu", port=11000, keepalive=60) # Connected to USC's MQTT server
     client.loop_start()
     
-    grove_rgb_lcd.setText_norefresh("People: 0\nNo Custom Mood")
-    grove_rgb_lcd.setRGB(255, 255, 255)
+    grove_rgb_lcd.setText("People: 0\nNo Custom Mood")
+    grove_rgb_lcd.setRGB(0, 0, 0)
 
 while True:
     if clock == 100: # Publish every 0.05 x 100 = 5 seconds
@@ -50,6 +66,8 @@ while True:
         client.publish("chenjosh/mood", str(mood))
         #publish
     
+    grove_rgb_lcd.setText_norefresh("People: 0\nNo Custom Mood")
+
 
     ultrasonic_value = grovepi.ultrasonicRead(ultrasonic_port)
 
@@ -58,6 +76,7 @@ while True:
     elif time_blocked > 3: # If something blocks the doorway for 0.2s or more, then we assume that a person did go through
         people += 1
         time_blocked = 0
+        update_LCD
     else:
         time_blocked = 0 # If not, then we don't count as someone went through the doorway.
     
