@@ -46,7 +46,7 @@ def get_mood_info(mood_info):
         return "Relaxing Mood"
 
 def update_LCD(num_people, mood_info):
-    text = "People: " + num_people + "\n" + get_mood_info(mood_info)
+    text = "People: " + str(num_people) + "\n" + get_mood_info(mood_info)
     grove_rgb_lcd.setText(text)
 
 
