@@ -19,6 +19,7 @@ button_port = 0 # D0
 def customMood(client, userdata, mood_message):
     mood_payload = str(mood_message.payload, "utf-8")
     mood = int(mood_payload)
+    update_LCD
 
 def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
@@ -45,7 +46,7 @@ def get_mood_info():
         return "Relaxing Mood"
 
 def update_LCD():
-    text = "People: " + People + "\n" + get_mood_info
+    text = "People: " + people + "\n" + get_mood_info
     grove_rgb_lcd.setText(text)
 
 
