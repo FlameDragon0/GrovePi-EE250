@@ -25,7 +25,7 @@ def on_connect(client, userdata, flags, rc):
 
     # Subscribed topics
     client.subscribe("chenjosh/customMood")
-    client.message_callback_add("chenjosh/customMood", mode)
+    client.message_callback_add("chenjosh/customMood", customMood)
 
 # Default message callback.
 def on_message(client, userdata, msg):
