@@ -32,6 +32,9 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     print("on_message: " + msg.topic + " " + str(msg.payload, "utf-8"))
 
+def initialize_lcd():
+    grove_rgb_lcd.setText("People: 0\nNo Custom Mood")
+    grove_rgb_lcd.setRGB(0, 0, 0)
 
 def get_mood_info(mood_info):
     if mood_info == 0:
@@ -56,9 +59,7 @@ if __name__ == '__main__':
     client.on_connect = on_connect
     client.connect(host="eclipse.usc.edu", port=11000, keepalive=60) # Connected to USC's MQTT server
     client.loop_start()
-    
-    grove_rgb_lcd.setText("People: 0\nNo Custom Mood")
-    grove_rgb_lcd.setRGB(0, 0, 0)
+    initialize_lcd
 
 while True:
     if clock == 100: # Publish every 0.05 x 100 = 5 seconds
