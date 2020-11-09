@@ -6,7 +6,7 @@ sys.path.append('../../Software/Python/grove_rgb_lcd/')
 import grovepi
 import grove_rgb_lcd
 
-time = 0
+clock = 0
 time_blocked = 0
 people = 0
 mood = 0
@@ -41,24 +41,26 @@ if __name__ == '__main__':
     client.loop_start()
 
 while True:
-    if time = 100: # Publish every 0.05 x 100 = 5 seconds
-        time = 0
+    if clock == 50: # Publish every 0.05 x 100 = 5 seconds
+        clock = 0
         client.publish("chenjosh/people", str(people))
         client.publish("chenjosh/mood", str(mood))
         #publish
     
-    grove_rgb_lcd.setText_norefresh("People: " + people + "\nNo custom mood")
+    text = "People: " + str(people) + "\nNo Custom Mood"
+    grove_rgb_lcd.setText_norefresh(text)
 
     ultrasonic_value = grovepi.ultrasonicRead(ultrasonic_port)
 
     if int(ultrasonic_value) < 70: # If something is less than 70cm away from the ultrasonic ranger, then something must be going through the door
         time_blocked += 1
-    elif time_blocked > 2: # If something blocks the doorway for 0.2s or more, then we assume that a person did go through
+    elif time_blocked > 3: # If something blocks the doorway for 0.2s or more, then we assume that a person did go through
         people += 1
+        time_blocked = 0
     else:
         time_blocked = 0 # If not, then we don't count as someone went through the doorway.
     
-    time += 1
+    clock += 1
     time.sleep(0.05) # Sleep for 0.1 seconds
 
 
