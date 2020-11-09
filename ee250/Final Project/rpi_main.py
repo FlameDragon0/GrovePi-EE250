@@ -1,6 +1,7 @@
 import paho.mqtt.client as mqtt
 import time
 import sys
+import threading
 sys.path.append('../../Software/Python/')
 sys.path.append('../../Software/Python/grove_rgb_lcd/')
 import grovepi
@@ -10,11 +11,16 @@ clock = 0
 time_blocked = 0
 people = 0
 mood = 0
+max_people = 10
+
 buzzer_port = 8 # D8
 ultrasonic_port = 7 # D7
-led_port = 3
+rled_port = 3 #D3 Red led
+bled_port = 2 #D2 Blue led
+gled_port = 1 #D1 Green led
 button_port = 0 # D0
 
+lock = threading.Lock()
 
 def customMood(client, userdata, mood_message):
     mood_payload = str(mood_message.payload, "utf-8")
@@ -47,7 +53,8 @@ def get_mood_info(mood_info): # Do the lighting functions + call them here!
 
 def update_LCD(num_people, mood_info):
     text = "People: " + str(num_people) + "\n" + get_mood_info(mood_info)
-    grove_rgb_lcd.setText(text)
+    with lock:
+        grove_rgb_lcd.setText(text)
 
 
 if __name__ == '__main__':
