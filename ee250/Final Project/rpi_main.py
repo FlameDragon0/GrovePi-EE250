@@ -19,7 +19,7 @@ button_port = 0 # D0
 def customMood(client, userdata, mood_message):
     mood_payload = str(mood_message.payload, "utf-8")
     mood = int(mood_payload)
-    update_LCD(people, mood)
+    update_LCD
 
 def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
@@ -74,7 +74,7 @@ while True:
     elif time_blocked > 3: # If something blocks the doorway for 0.2s or more, then we assume that a person did go through
         people += 1
         time_blocked = 0
-        update_LCD(people, mood)
+        update_LCD
     else:
         time_blocked = 0 # If not, then we don't count as someone went through the doorway.
 
