@@ -32,9 +32,6 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     print("on_message: " + msg.topic + " " + str(msg.payload, "utf-8"))
 
-def initialize_lcd():
-    grove_rgb_lcd.setText("People: 0\nNo Custom Mood")
-    grove_rgb_lcd.setRGB(0, 0, 0)
 
 def get_mood_info(mood_info):
     if mood_info == 0:
@@ -59,7 +56,9 @@ if __name__ == '__main__':
     client.on_connect = on_connect
     client.connect(host="eclipse.usc.edu", port=11000, keepalive=60) # Connected to USC's MQTT server
     client.loop_start()
-    initialize_lcd
+
+    grove_rgb_lcd.setText("People: 0\nNo Custom Mood") # Initializing LCD to initial conditions, with nobody inside the room and no custom mood.
+    grove_rgb_lcd.setRGB(0, 0, 0)
 
 while True:
     if clock == 100: # Publish every 0.05 x 100 = 5 seconds
@@ -67,9 +66,6 @@ while True:
         client.publish("chenjosh/people", str(people))
         client.publish("chenjosh/mood", str(mood))
         #publish
-    
-    grove_rgb_lcd.setText_norefresh("People: 0\nNo Custom Mood")
-
 
     ultrasonic_value = grovepi.ultrasonicRead(ultrasonic_port)
 
