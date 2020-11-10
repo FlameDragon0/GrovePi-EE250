@@ -87,7 +87,7 @@ while True:
 
     if rotary_value > 0:
         rotary_held = 1
-    elif (rotary_value == 0) * (rotary_held)
+    elif (rotary_value == 0) * (rotary_held):
         if people > 0:
             people = people - 1
             LCD_needs_update = 1
