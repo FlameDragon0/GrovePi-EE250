@@ -27,6 +27,7 @@ def customMood(client, userdata, mood_message):
     mood_payload = str(mood_message.payload, "utf-8")
     mood = int(mood_payload)
     LCD_needs_update = 1
+    print("Custom Mood received!")
 
 def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
@@ -90,7 +91,7 @@ while True:
         update_LCD(people, mood)
         LCD_needs_update = 0
 
-    
+
 
     clock += 1
     time.sleep(0.05) # Sleep for 50ms
