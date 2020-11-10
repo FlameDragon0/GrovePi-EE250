@@ -54,7 +54,6 @@ def update_LCD(num_people, mood_info):
 
 
 if __name__ == '__main__':
-    global LCD_needs_update
     client = mqtt.Client()
     client.on_message = on_message
     client.on_connect = on_connect
