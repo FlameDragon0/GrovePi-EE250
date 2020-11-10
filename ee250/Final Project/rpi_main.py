@@ -15,7 +15,8 @@ ultrasonic_port = 7 # D7
 rled_port = 3 #D3 Red led
 bled_port = 2 #D2 Blue led
 gled_port = 1 #D1 Green led
-button_port = 0 # D0
+
+sound_sensor_port = 0 # A0
 
 lock = threading.Lock()
 
@@ -81,17 +82,12 @@ while True:
 
 
     ultrasonic_value = grovepi.ultrasonicRead(ultrasonic_port)
-    print(grovepi.digitalRead(button_port))
-    #button_pressed = grovepi.digitalRead(button_port)
+    sensor_value = grovepi.analogRead(sound_sensor_port)
 
-    #if button_pressed:
-    #    button_held = 1
-    #elif button_held * (button_pressed == 0):
-    #    button_held = 0
-    #    if (people > 0):
-    #        people = people - 1
-    #       LCD_needs_update = 1
-
+    if sensor_value > 400:
+        people = people - 1
+        LCD_needs_update = 1
+    
 
     if int(ultrasonic_value) < 70: # If something is less than 70cm away from the ultrasonic ranger, then something must be going through the door
         time_blocked += 1
