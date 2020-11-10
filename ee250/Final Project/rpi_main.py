@@ -53,8 +53,8 @@ def get_mood_info(mood_info): # Do the lighting functions + call them here!
     elif mood_info == 4:
         return "Relaxing Mood"
 
-def update_LCD(num_people, mood_info):
-    text = "People: " + str(num_people) + "\n" + get_mood_info(mood_info)
+def update_LCD():
+    text = "People: " + str(people) + "\n" + get_mood_info(mood)
     with lock:
         grove_rgb_lcd.setText(text)
 
@@ -77,6 +77,7 @@ while True:
         #publish
 
     ultrasonic_value = grovepi.ultrasonicRead(ultrasonic_port)
+    button_pressed = rovepi.digitalRead(button_port)
 
     if int(ultrasonic_value) < 70: # If something is less than 70cm away from the ultrasonic ranger, then something must be going through the door
         time_blocked += 1
@@ -88,7 +89,7 @@ while True:
         time_blocked = 0 # If not, then we don't count as someone went through the doorway.
 
     if LCD_needs_update != 0:
-        update_LCD(people, mood)
+        update_LCD
         LCD_needs_update = 0
 
 
