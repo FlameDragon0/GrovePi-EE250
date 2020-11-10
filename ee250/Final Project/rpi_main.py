@@ -19,10 +19,10 @@ gled_port = 1 #D1 Green led
 lock = threading.Lock()
 
 def customMood(client, userdata, mood_message):
+    global LCD_needs_update
     mood_payload = str(mood_message.payload, "utf-8")
     mood = int(mood_payload)
     LCD_needs_update = 1
-    print("Custom Mood received!" + str(mood))
 
 def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
@@ -50,11 +50,11 @@ def get_mood_info(mood_info): # Do the lighting functions + call them here!
 
 def update_LCD(num_people, mood_info):
     text = "People: " + str(num_people) + "\n" + get_mood_info(mood_info)
-    with lock:
-        grove_rgb_lcd.setText(text)
+    grove_rgb_lcd.setText(text)
 
 
 if __name__ == '__main__':
+    global LCD_needs_update
     client = mqtt.Client()
     client.on_message = on_message
     client.on_connect = on_connect
