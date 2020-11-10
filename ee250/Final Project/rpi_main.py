@@ -17,6 +17,7 @@ bled_port = 2 #D2 Blue led
 gled_port = 1 #D1 Green led
 
 sound_sensor_port = 0 # A0
+grovepi.pinMode(sound_sensor_port,"INPUT")
 
 lock = threading.Lock()
 
@@ -85,8 +86,9 @@ while True:
     sensor_value = grovepi.analogRead(sound_sensor_port)
 
     if sensor_value > 400:
-        people = people - 1
-        LCD_needs_update = 1
+        if people > 0:
+            people = people - 1
+            LCD_needs_update = 1
     
 
     if int(ultrasonic_value) < 70: # If something is less than 70cm away from the ultrasonic ranger, then something must be going through the door
