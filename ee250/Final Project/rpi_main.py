@@ -89,6 +89,7 @@ while True:
         button_held = 0
         if (people > 0):
             people -= 1
+            LCD_needs_update = 1
 
 
     if int(ultrasonic_value) < 70: # If something is less than 70cm away from the ultrasonic ranger, then something must be going through the door
