@@ -16,8 +16,8 @@ rled_port = 3 #D3 Red led
 bled_port = 2 #D2 Blue led
 gled_port = 1 #D1 Green led
 
-sound_sensor_port = 0 # A0
-grovepi.pinMode(sound_sensor_port,"INPUT")
+rotary_port = 0 # A0
+grovepi.pinMode(rotary_port,"INPUT")
 
 lock = threading.Lock()
 
@@ -75,7 +75,7 @@ if __name__ == '__main__':
     button_held = 0
 
 while True:
-    if clock == 100: # Publish every 0.05 x 100 = 5 seconds
+    if clock == 50: # Publish every 0.1 x 50 = 5 seconds
         clock = 0
         client.publish("chenjosh/people", str(people))
         client.publish("chenjosh/mood", str(mood))
@@ -83,9 +83,9 @@ while True:
 
 
     ultrasonic_value = grovepi.ultrasonicRead(ultrasonic_port)
-    sensor_value = grovepi.analogRead(sound_sensor_port)
+    rotary_value = grovepi.analogRead(rotary_port)
 
-    if sensor_value > 400:
+    if rotary_value > 400:
         if people > 0:
             people = people - 1
             LCD_needs_update = 1
@@ -93,7 +93,7 @@ while True:
 
     if int(ultrasonic_value) < 70: # If something is less than 70cm away from the ultrasonic ranger, then something must be going through the door
         time_blocked += 1
-    elif time_blocked > 3: # If something blocks the doorway for 0.2s or more, then we assume that a person did go through
+    elif time_blocked > 1: # If something blocks the doorway for 0.2s or more, then we assume that a person did go through
         people += 1
         time_blocked = 0
         LCD_needs_update = 1
@@ -107,6 +107,6 @@ while True:
 
 
     clock += 1
-    time.sleep(0.05) # Sleep for 50ms
+    time.sleep(0.1) # Sleep for 100ms
 
 
