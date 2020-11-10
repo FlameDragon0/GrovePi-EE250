@@ -7,11 +7,6 @@ sys.path.append('../../Software/Python/grove_rgb_lcd/')
 import grovepi
 import grove_rgb_lcd
 
-clock = 0
-time_blocked = 0
-people = 0
-mood = 0
-max_people = 10
 LCD_needs_update = 0
 
 buzzer_port = 8 # D8
@@ -53,8 +48,8 @@ def get_mood_info(mood_info): # Do the lighting functions + call them here!
     elif mood_info == 4:
         return "Relaxing Mood"
 
-def update_LCD():
-    text = "People: " + str(people) + "\n" + get_mood_info(mood)
+def update_LCD(num_people, mood_info):
+    text = "People: " + str(num_people) + "\n" + get_mood_info(mood_info)
     with lock:
         grove_rgb_lcd.setText(text)
 
@@ -69,6 +64,13 @@ if __name__ == '__main__':
     grove_rgb_lcd.setText("People: 0\nNo Custom Mood") # Initializing LCD to initial conditions, with nobody inside the room and no custom mood.
     grove_rgb_lcd.setRGB(0, 0, 0)
 
+    clock = 0
+    time_blocked = 0
+    people = 0
+    mood = 0
+    max_people = 10
+    button_held = 0
+
 while True:
     if clock == 100: # Publish every 0.05 x 100 = 5 seconds
         clock = 0
@@ -76,8 +78,18 @@ while True:
         client.publish("chenjosh/mood", str(mood))
         #publish
 
+
     ultrasonic_value = grovepi.ultrasonicRead(ultrasonic_port)
     button_pressed = grovepi.digitalRead(button_port)
+
+
+    if button_pressed:
+        button_held = 1
+    elif button_held * (button_pressed == 0):
+        button_held = 0
+        if (people > 0):
+            people -= 1
+
 
     if int(ultrasonic_value) < 70: # If something is less than 70cm away from the ultrasonic ranger, then something must be going through the door
         time_blocked += 1
@@ -89,7 +101,7 @@ while True:
         time_blocked = 0 # If not, then we don't count as someone went through the doorway.
 
     if LCD_needs_update != 0:
-        update_LCD
+        update_LCD(people, mood)
         LCD_needs_update = 0
 
 
