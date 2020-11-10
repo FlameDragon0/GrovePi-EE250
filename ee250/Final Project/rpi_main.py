@@ -77,7 +77,7 @@ while True:
         #publish
 
     ultrasonic_value = grovepi.ultrasonicRead(ultrasonic_port)
-    button_pressed = rovepi.digitalRead(button_port)
+    button_pressed = grovepi.digitalRead(button_port)
 
     if int(ultrasonic_value) < 70: # If something is less than 70cm away from the ultrasonic ranger, then something must be going through the door
         time_blocked += 1
