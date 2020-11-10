@@ -72,7 +72,7 @@ if __name__ == '__main__':
     time_blocked = 0
     people = 0
     max_people = 10
-    button_held = 0
+    rotary_held = 0
 
 while True:
     if clock == 50: # Publish every 0.1 x 50 = 5 seconds
@@ -85,10 +85,13 @@ while True:
     ultrasonic_value = grovepi.ultrasonicRead(ultrasonic_port)
     rotary_value = grovepi.analogRead(rotary_port)
 
-    if rotary_value > 400:
+    if rotary_value > 0:
+        rotary_held = 1
+    elif (rotary_value == 0) * (rotary_held)
         if people > 0:
             people = people - 1
             LCD_needs_update = 1
+        rotary_held = 0
     
 
     if int(ultrasonic_value) < 70: # If something is less than 70cm away from the ultrasonic ranger, then something must be going through the door
