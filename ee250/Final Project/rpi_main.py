@@ -11,10 +11,10 @@ LCD_needs_update = 0
 
 buzzer_port = 8 # D8
 ultrasonic_port = 7 # D7
+button_port = 4 # D4
 rled_port = 3 #D3 Red led
 bled_port = 2 #D2 Blue led
 gled_port = 1 #D1 Green led
-button_port = 0 # D0
 
 lock = threading.Lock()
 
