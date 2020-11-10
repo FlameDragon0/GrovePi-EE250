@@ -102,7 +102,7 @@ while True:
         time_blocked = 0 # If not, then we don't count as someone went through the doorway.
 
     if LCD_needs_update != 0:
-        update_LCD(people, mood)
+        update_LCD(people)
         LCD_needs_update = 0
 
 
