@@ -27,7 +27,7 @@ def customMood(client, userdata, mood_message):
     mood_payload = str(mood_message.payload, "utf-8")
     mood = int(mood_payload)
     LCD_needs_update = 1
-    print("Custom Mood received!")
+    print("Custom Mood received!" + str(mood))
 
 def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
@@ -87,7 +87,7 @@ while True:
     else:
         time_blocked = 0 # If not, then we don't count as someone went through the doorway.
 
-    if LCD_needs_update:
+    if LCD_needs_update != 0:
         update_LCD(people, mood)
         LCD_needs_update = 0
 
