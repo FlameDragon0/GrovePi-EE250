@@ -81,7 +81,6 @@ while True:
 
     ultrasonic_value = grovepi.ultrasonicRead(ultrasonic_port)
     button_pressed = grovepi.digitalRead(button_port)
-    print(button_pressed)
 
     if button_pressed:
         button_held = 1
