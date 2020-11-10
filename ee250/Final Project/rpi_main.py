@@ -8,6 +8,7 @@ import grovepi
 import grove_rgb_lcd
 
 LCD_needs_update = 0
+mood = 0
 
 buzzer_port = 8 # D8
 ultrasonic_port = 7 # D7
@@ -20,6 +21,7 @@ lock = threading.Lock()
 
 def customMood(client, userdata, mood_message):
     global LCD_needs_update
+    global mood
     mood_payload = str(mood_message.payload, "utf-8")
     mood = int(mood_payload)
     LCD_needs_update = 1
@@ -36,20 +38,21 @@ def on_message(client, userdata, msg):
     print("on_message: " + msg.topic + " " + str(msg.payload, "utf-8"))
 
 
-def get_mood_info(mood_info): # Do the lighting functions + call them here!
-    if mood_info == 0:
+def get_mood_info(): # Do the lighting functions + call them here!
+    global mood
+    if mood == 0:
         return "No Custom Mood"
-    elif mood_info == 1:
+    elif mood == 1:
         return "Movie Mood"
-    elif mood_info == 2:
+    elif mood == 2:
         return "Party Mood"
-    elif mood_info == 3:
+    elif mood == 3:
         return "Conference Mood"
-    elif mood_info == 4:
+    elif mood == 4:
         return "Relaxing Mood"
 
-def update_LCD(num_people, mood_info):
-    text = "People: " + str(num_people) + "\n" + get_mood_info(mood_info)
+def update_LCD(num_people):
+    text = "People: " + str(num_people) + "\n" + get_mood_info()
     grove_rgb_lcd.setText(text)
 
 
@@ -66,7 +69,6 @@ if __name__ == '__main__':
     clock = 0
     time_blocked = 0
     people = 0
-    mood = 0
     max_people = 10
     button_held = 0
 
