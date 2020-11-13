@@ -83,7 +83,7 @@ def customMood(client, userdata, mood_message):
     LCD_needs_update = 1
 
 
-def maxPeople(client, userdata, max_message)
+def maxPeople(client, userdata, max_message):
     global max_people
     max_people = int(mex_message.payload, "utf-8")
 
@@ -101,20 +101,6 @@ def on_connect(client, userdata, flags, rc):
 # Default message callback.
 def on_message(client, userdata, msg):
     print("on_message: " + msg.topic + " " + str(msg.payload, "utf-8"))
-
-
-def set_mood(): # Do the lighting functions + call them here!
-    global mood
-    if mood == 0:
-        return "No Custom Mood"
-    elif mood == 1:
-        return "Movie Mood"
-    elif mood == 2:
-        return "Party Mood"
-    elif mood == 3:
-        return "Conference Mood"
-    elif mood == 4:
-        return "Relaxing Mood"
 
 
 def update_LCD(num_people):
@@ -173,9 +159,9 @@ while True:
         movie_mood(31)
     elif mood == "Party Mood":
         party_mood(clock)
-    elif mood = "Conference Mood":
+    elif mood == "Conference Mood":
         conference_mood(255)
-    elif mood = "Relaxing Mood":
+    elif mood == "Relaxing Mood":
         relaxing_mood(127)
     
 
