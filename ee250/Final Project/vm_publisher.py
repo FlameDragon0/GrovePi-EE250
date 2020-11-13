@@ -19,19 +19,19 @@ def on_press(key):
     
     if k == '0':
         # reset to normal mode
-        client.publish("chenjosh/customMode", "0")
+        client.publish("chenjosh/customMood", "No Custom Mood")
     elif k == '1':
         # set to Movie mode (Dark)
-        client.publish("chenjosh/customMode", "1")
+        client.publish("chenjosh/customMood", "Movie Mood")
     elif k == '2':
         # set to Party mode (Flashing Lights)
-        client.publish("chenjosh/customMode" , "2")
+        client.publish("chenjosh/customMood", "Party Mood")
     elif k == '3':
         # set to Conference mode (Bright Lights)
-        client.publish("chenjosh/customMode", "3")
+        client.publish("chenjosh/customMood", "Conference Mood")
     elif k == '4':
         # set to Relaxing mode (Dim Lights)
-        client.publish("chenjosh/customMode", "4")
+        client.publish("chenjosh/customMood", "Relaxing Mood")
 
 if __name__ == '__main__':
     #setup the keyboard event listener
