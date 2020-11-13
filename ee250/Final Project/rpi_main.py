@@ -13,9 +13,9 @@ max_people = 10
 
 buzzer_port = 8 # D8
 ultrasonic_port = 7 # D7
-rled_port = 4 #D3 Red led
-bled_port = 3 #D2 Blue led
-gled_port = 2 #D1 Green led
+rled_port = 6 #D6 Red led
+bled_port = 3 #D3 Blue led
+gled_port = 5 #D5 Green led
 
 rotary_port = 0 # A0, I used the rotary encoder instead of a button because my button was not working
 grovepi.pinMode(rotary_port,"INPUT")
