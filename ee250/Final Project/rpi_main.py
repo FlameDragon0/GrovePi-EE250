@@ -27,6 +27,7 @@ lock = threading.Lock()
 
 def no_custom_mood(num_people):
     global max_people
+    global rled_port, bled_port, gled_port
     if num_people > 0:
         grovepi.digitalWrite(gled_port, 1)
     else:
@@ -44,12 +45,14 @@ def no_custom_mood(num_people):
 
 
 def custom_brightness_mood(brightness): # all 3 leds gets turned on but their brightness goes down
+    global rled_port, bled_port, gled_port
     grovepi.analogWrite(gled_port, brightness) # Brightness = 31 (1/8th of the led's max brightness) in Movie Mood
     grovepi.analogWrite(bled_port, brightness) # Brightness = 256 (full led brightness) in Conference Mood
     grovepi.analogWrite(rled_port, brightness) # Brightness = 127 (half of the led's max brightness) in Relaxing Mood
 
 
 def party_mood(clock): # three leds start flashing in an fun "party style" pattern!
+    global rled_port, bled_port, gled_port
     if clock < 0.5:
         grovepi.digitalWrite(gled_port, 1)
         grovepi.digitalWrite(bled_port, 0)
@@ -157,13 +160,13 @@ while True:
     if mood == "No Custom Mood":
         no_custom_mood(people)
     elif mood == "Movie Mood":
-        movie_mood(31)
+        custom_brightness_mood(31)
     elif mood == "Party Mood":
         party_mood(clock)
     elif mood == "Conference Mood":
-        conference_mood(255)
+        custom_brightness_mood(255)
     elif mood == "Relaxing Mood":
-        relaxing_mood(127)
+        rcustom_brightness_mood(127)
     
 
     if LCD_needs_update != 0:
