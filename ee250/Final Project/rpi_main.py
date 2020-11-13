@@ -13,9 +13,9 @@ max_people = 10
 
 buzzer_port = 8 # D8
 ultrasonic_port = 7 # D7
-rled_port = 3 #D3 Red led
-bled_port = 2 #D2 Blue led
-gled_port = 1 #D1 Green led
+rled_port = 4 #D3 Red led
+bled_port = 3 #D2 Blue led
+gled_port = 2 #D1 Green led
 
 rotary_port = 0 # A0, I used the rotary encoder instead of a button because my button was not working
 grovepi.pinMode(rotary_port,"INPUT")
@@ -150,13 +150,13 @@ while True:
         people += 1
         time_blocked = 0
         LCD_needs_update = 1
-        if mood == "No Custom Mood":
-            no_custom_mood(people)
     else:
         time_blocked = 0 # If not, then we don't count as someone went through the doorway.
 
 
-    if mood == "Movie Mood":
+    if mood == "No Custom Mood":
+        no_custom_mood(people)
+    elif mood == "Movie Mood":
         movie_mood(31)
     elif mood == "Party Mood":
         party_mood(clock)
