@@ -8,7 +8,7 @@ import grovepi
 import grove_rgb_lcd
 
 LCD_needs_update = 0
-mood = ""
+mood = "No Custom Mood"
 max_people = 10
 
 buzzer_port = 8 # D8
@@ -104,6 +104,7 @@ def on_message(client, userdata, msg):
 
 
 def update_LCD(num_people):
+    global mood
     text = "People: " + str(num_people) + "\n" + mood
     grove_rgb_lcd.setText(text)
 
