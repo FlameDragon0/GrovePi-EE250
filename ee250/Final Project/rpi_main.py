@@ -131,7 +131,6 @@ while True:
     if clock == 50: # Publish every 0.1 x 50 = 5 seconds
         clock = 0
         client.publish("chenjosh/people", str(people))
-        client.publish("chenjosh/mood", str(mood))
         #publish
 
 
