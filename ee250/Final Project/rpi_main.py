@@ -53,23 +53,23 @@ def custom_brightness_mood(brightness): # all 3 leds gets turned on but their br
 
 def party_mood(clock): # three leds start flashing in an fun "party style" pattern!
     global rled_port, bled_port, gled_port
-    if clock < 0.5:
+    if clock < 5:
         grovepi.digitalWrite(gled_port, 1)
         grovepi.digitalWrite(bled_port, 0)
         grovepi.digitalWrite(rled_port, 0)
-    elif (clock < 1.0) + (clock >= 1.5) * (clock < 2.0) + (clock >= 2.5) * (clock < 3.0) + (clock >= 3.5) * (clock < 4.0):
+    elif (clock < 10) + (clock >= 15) * (clock < 20) + (clock >= 25) * (clock < 30) + (clock >= 35) * (clock < 40):
         grovepi.digitalWrite(gled_port, 0)
         grovepi.digitalWrite(bled_port, 1)
         grovepi.digitalWrite(rled_port, 0)
-    elif clock < 1.5:
+    elif clock < 15:
         grovepi.digitalWrite(gled_port, 0)
         grovepi.digitalWrite(bled_port, 0)
         grovepi.digitalWrite(rled_port, 1)
-    elif (clock < 2.5) + (clock >= 3.0) * (clock < 3.5):
+    elif (clock < 25) + (clock >= 30) * (clock < 35):
         grovepi.digitalWrite(gled_port, 1)
         grovepi.digitalWrite(bled_port, 0)
         grovepi.digitalWrite(rled_port, 1)
-    elif (clock >= 4.2) * (clock < 4.4) + (clock >= 4.6) * (clock < 4.8):
+    elif (clock >= 42) * (clock < 44) + (clock >= 46) * (clock < 48):
         grovepi.digitalWrite(gled_port, 1)
         grovepi.digitalWrite(bled_port, 1)
         grovepi.digitalWrite(rled_port, 1)
@@ -120,7 +120,7 @@ if __name__ == '__main__':
     client.loop_start()
 
     grove_rgb_lcd.setText("People: 0\nNo Custom Mood") # Initializing LCD to initial conditions, with nobody inside the room and no custom mood.
-    grove_rgb_lcd.setRGB(0, 0, 0)
+    grove_rgb_lcd.setRGB(255, 255, 255)
 
     clock = 0
     time_blocked = 0
@@ -166,7 +166,7 @@ while True:
     elif mood == "Conference Mood":
         custom_brightness_mood(255)
     elif mood == "Relaxing Mood":
-        rcustom_brightness_mood(127)
+        custom_brightness_mood(127)
     
 
     if LCD_needs_update != 0:
