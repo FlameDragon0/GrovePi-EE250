@@ -53,23 +53,23 @@ def custom_brightness_mood(brightness): # all 3 leds gets turned on but their br
 
 def party_mood(clock): # three leds start flashing in an fun "party style" pattern!
     global rled_port, bled_port, gled_port
-    if (clock < 2) + (clock >= 6) * (clock < 8) + (clock >= 14) * (clock < 16):
+    if (clock < 2) + (clock >= 8) * (clock < 10) + (clock >= 164) * (clock < 18):
         grovepi.digitalWrite(gled_port, 1)
         grovepi.digitalWrite(bled_port, 0)
         grovepi.digitalWrite(rled_port, 0)
-    elif (clock < 4) + (clock >= 8) * (clock < 10) + (clock >= 12) * (clock < 14) + (clock >= 16) * (clock < 18) + (clock >= 20) * (clock < 22) + (clock >= 24) * (clock < 26) + (clock >= 28) * (clock < 30) + (clock >= 32) * (clock < 34) + (clock >= 36) * (clock < 38):
+    elif (clock < 4) + (clock >= 6) * (clock < 8) + (clock >= 10) * (clock < 12) + (clock >= 14) * (clock < 16) + (clock >= 18) * (clock < 20) + (clock >= 22) * (clock < 24) + (clock >= 26) * (clock < 28) + (clock >= 30) * (clock < 32) + (clock >= 34) * (clock < 36):
         grovepi.digitalWrite(gled_port, 0)
         grovepi.digitalWrite(bled_port, 1)
         grovepi.digitalWrite(rled_port, 0)
-    elif (clock < 6) + (clock >= 10) * (clock < 12) + (clock >= 18) * (clock < 20):
+    elif (clock < 6) + (clock >= 12) * (clock < 14) + (clock >= 20) * (clock < 22):
         grovepi.digitalWrite(gled_port, 0)
         grovepi.digitalWrite(bled_port, 0)
         grovepi.digitalWrite(rled_port, 1)
-    elif (clock < 24) + (clock >= 26) * (clock < 28) + (clock >= 30) * (clock < 32) + (clock >= 34) * (clock < 36):
+    elif (clock < 26) + (clock >= 28) * (clock < 30) + (clock >= 32) * (clock < 34) + (clock >= 36) * (clock < 38):
         grovepi.digitalWrite(gled_port, 1)
         grovepi.digitalWrite(bled_port, 0)
         grovepi.digitalWrite(rled_port, 1)
-    elif (clock >= 40) * (clock < 42) + (clock >= 44) * (clock < 46) + (clock >= 48) * (clock < 50):
+    elif (clock >= 42) * (clock < 44) + (clock >= 46) * (clock < 48):
         grovepi.digitalWrite(gled_port, 1)
         grovepi.digitalWrite(bled_port, 1)
         grovepi.digitalWrite(rled_port, 1)
