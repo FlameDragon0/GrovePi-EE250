@@ -88,7 +88,7 @@ def customMood(client, userdata, mood_message):
 
 def maxPeople(client, userdata, max_message):
     global max_people
-    max_people = int(mex_message.payload, "utf-8")
+    max_people = int(max_message.payload, "utf-8")
 
 
 def buzzer_beep(clock, time_entered):
@@ -147,7 +147,7 @@ while True:
         client.publish("chenjosh/people", str(people))
         percent = str((float(people) /  max_people) * 100) + "%"
         client.publish("chenjosh/percentage", percent)
-        client.publish("chenjosh/currentMood", str(mood))
+        client.publish("chenjosh/currentMood", mood)
         #publish
 
 
