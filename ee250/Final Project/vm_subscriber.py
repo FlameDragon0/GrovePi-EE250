@@ -6,11 +6,11 @@ def people(client, userdata, people_message):
     print("Number of people in room: " + people_payload)
 
 def percentage(client, userdata, percentage_message):
-    percentage_payload = str(button_message.payload, "utf-8")
-    print("Current capacity: %2d", float(percentage_payload))
+    percentage_payload = str(percentage_message.payload, "utf-8")
+    print("Current capacity: " + percentage_payload)
 
 def mood(client, userdata, mood_message):
-    mood_payload = str(mood_message)
+    mood_payload = str(mood_message.payload, "utf-8")
     print("Current mood: " + mood_payload)
 
 def on_connect(client, userdata, flags, rc):

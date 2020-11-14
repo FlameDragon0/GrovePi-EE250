@@ -88,7 +88,8 @@ def customMood(client, userdata, mood_message):
 
 def maxPeople(client, userdata, max_message):
     global max_people
-    max_people = int(max_message.payload, "utf-8")
+    new_max = str(max_message.payload, "utf-8")
+    max_people = int(new_max)
 
 
 def buzzer_beep(clock, time_entered):
