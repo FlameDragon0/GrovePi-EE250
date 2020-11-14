@@ -7,11 +7,15 @@ sys.path.append('../../Software/Python/grove_rgb_lcd/')
 import grovepi
 import grove_rgb_lcd
 
+
+# Initializing global variables
 LCD_needs_update = 0
 mood = "No Custom Mood"
 max_people = 10
 sound_buzzer = 0
 
+
+# Initializing ports
 buzzer_port = 8 # D8
 ultrasonic_port = 7 # D7
 rled_port = 6 #D6 Red led
@@ -25,20 +29,20 @@ grovepi.pinMode(bled_port,"OUTPUT")
 grovepi.pinMode(gled_port,"OUTPUT")
 
 
-def no_custom_mood(num_people):
+def no_custom_mood(num_people): # Normal mood where the LED's light on based on the percentage of people in the room
     global max_people
     global rled_port, bled_port, gled_port
-    if num_people > 0:
+    if num_people > 0: # Green LED will light up if at least 1 person is in the room
         grovepi.digitalWrite(gled_port, 1)
     else:
         grovepi.digitalWrite(gled_port, 0)
     
-    if num_people >= (max_people/2):
+    if num_people >= (max_people/2):# Blue LED will light up if the room has reached 50% capacity
         grovepi.digitalWrite(bled_port, 1)
     else:
         grovepi.digitalWrite(bled_port, 0)
     
-    if num_people >= max_people:
+    if num_people >= max_people: # Red LED will light up if the room has reached 100% capacity
         grovepi.digitalWrite(rled_port, 1)
     else:
         grovepi.digitalWrite(rled_port, 0)
@@ -79,20 +83,20 @@ def party_mood(clock): # three leds start flashing in an fun "party style" patte
         grovepi.digitalWrite(rled_port, 0)
 
 
-def customMood(client, userdata, mood_message):
+def customMood(client, userdata, mood_message): # New mood command from controller
     global LCD_needs_update
     global mood
     mood = str(mood_message.payload, "utf-8")
-    LCD_needs_update = 1
+    LCD_needs_update = 1 # Updates LCD with the new mood
 
 
-def maxPeople(client, userdata, max_message):
+def maxPeople(client, userdata, max_message): # New maximum from controller
     global max_people
     new_max = str(max_message.payload, "utf-8")
     max_people = int(new_max)
 
 
-def buzzer_beep(clock, time_entered):
+def buzzer_beep(clock, time_entered): # Buzzer will sound two beeps when someone enters the room
     global buzzer_port
     global sound_buzzer
     if (time_entered > 40) * (clock < 10): #In case clock was set to 0 before the buzzer finished beeping
@@ -105,10 +109,8 @@ def buzzer_beep(clock, time_entered):
         sound_buzzer = 0
 
 
-def on_connect(client, userdata, flags, rc):
+def on_connect(client, userdata, flags, rc): # Subscribed topics
     print("Connected to server (i.e., broker) with result code "+str(rc))
-
-    # Subscribed topics
     client.subscribe("chenjosh/customMood")
     client.message_callback_add("chenjosh/customMood", customMood)
     client.subscribe("chenjosh/maxPeople")
@@ -120,7 +122,7 @@ def on_message(client, userdata, msg):
     print("on_message: " + msg.topic + " " + str(msg.payload, "utf-8"))
 
 
-def update_LCD(num_people):
+def update_LCD(num_people): # Function that updates the LCD's display
     global mood
     text = "People: " + str(num_people) + "\n" + mood
     grove_rgb_lcd.setText(text)
@@ -133,9 +135,13 @@ if __name__ == '__main__':
     client.connect(host="eclipse.usc.edu", port=11000, keepalive=60) # Connected to USC's MQTT server
     client.loop_start()
 
-    grove_rgb_lcd.setText("People: 0\nNo Custom Mood") # Initializing LCD to initial conditions, with nobody inside the room and no custom mood.
+
+    # Initializing LCD to initial conditions, with nobody inside the room and no custom mood.
+    grove_rgb_lcd.setText("People: 0\nNo Custom Mood")
     grove_rgb_lcd.setRGB(255, 255, 255)
 
+
+    # Initalizing local variables
     clock = 0
     time_blocked = 0
     people = 0
@@ -149,11 +155,18 @@ while True:
         percent = str((float(people) /  max_people) * 100) + "%"
         client.publish("chenjosh/percentage", percent)
         client.publish("chenjosh/currentMood", mood)
-        #publish
+        if people == max_people:
+            warning = "Room at maximum capacity!"
+            client.publish("chenjosh/maxWarning", warning)
+        elif people > max_people:
+            warning = "WARNING: Room over maximum capacity!"
+            client.publish("chenjosh/maxWarning", warning)
 
 
+    # Reads the values from the ultrasonic and rotary encoder (which should be a button)
     ultrasonic_value = grovepi.ultrasonicRead(ultrasonic_port)
     rotary_value = grovepi.analogRead(rotary_port)
+
 
     if rotary_value > 0: # "Button" has been pressed
         rotary_held = 1
@@ -176,6 +189,7 @@ while True:
         time_blocked = 0 # If not, then we don't count as someone went through the doorway.
 
 
+    # Setting the different moods
     if mood == "No Custom Mood":
         no_custom_mood(people)
     elif mood == "Movie Mood":
@@ -188,15 +202,18 @@ while True:
         custom_brightness_mood(127)
     
 
+    # Checking if LCD display needs an update
     if LCD_needs_update != 0:
         update_LCD(people)
         LCD_needs_update = 0
     
 
+    # Checking if buzzer needs to be sounded
     if sound_buzzer:
         buzzer_beep(clock, entered_time)
 
 
+    #Increments clock every 0.1 seconds
     clock += 1
     time.sleep(0.1) # Sleep for 100ms
 

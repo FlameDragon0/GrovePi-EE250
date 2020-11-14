@@ -2,6 +2,8 @@ import paho.mqtt.client as mqtt
 import time
 from pynput import keyboard
 
+menu = 1
+
 def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
 
@@ -12,7 +14,8 @@ def on_message(client, userdata, msg):
     print("on_message: " + msg.topic + " " + str(msg.payload, "utf-8"))
 
 
-def command(key, menu):
+def command(key):
+    global menu
     if key == 'n':
         # reset to normal mode
         client.publish("chenjosh/customMood", "No Custom Mood")
@@ -40,26 +43,25 @@ def command(key, menu):
         if max_people:
             client.publish("chenjosh/maxPeople", str(max_people))
             print("New maximum capacity = " + str(max_people))
-        elif max_people == 0:
+        elif max_people == 0: # In case the user missclicked, entering 0 will not update this maximum value
             print("Cancelled")
         else:
             print("That was an invalid input!")
-    else:
+    else: # If the user entered something invalid, then a warning will be displayed!
         print("That was an invalid input!")
     menu = 1
 
 
 if __name__ == '__main__':
-    #Connecting to server
     client = mqtt.Client()
     client.on_message = on_message
     client.on_connect = on_connect
-    client.connect(host="eclipse.usc.edu", port=11000, keepalive=60)
+    client.connect(host="eclipse.usc.edu", port=11000, keepalive=60) # Connecting to USC's MQTT server
     client.loop_start()
 
     key = ""
-    menu = 1
     menu_text = "\nEnter the letter corresponding to the settings you wish to apply!\nn: Reset room to non-custom mode\nm: Set room to Movie\np: Set room to Party Mood\nc: Set room to Conference Mood\nr: Set room to Relaxing Mood\nx: Change maximum capacity"
+    # Sorry for the long text! Python doesn't allow me to wrap around
 
     while True:
         if menu:
@@ -67,8 +69,8 @@ if __name__ == '__main__':
             print(menu_text)
             menu = 0
         
-        key = input()
-        if key != "":
-            command(key, menu)
+        key = input() # Obtain the input from the user
+        if key != "": # If the user didn't input anything, then nothing will be done!
+            command(key)
 
         time.sleep(1)
