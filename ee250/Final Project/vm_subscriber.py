@@ -4,7 +4,7 @@ import time
 
 def people(client, userdata, people_message): # Displays the current number of people in the room
     people_payload = str(people_message.payload, "utf-8")
-    print("Number of people in room: " + people_payload)
+    print("\nNumber of people in room: " + people_payload)
 
 def percentage(client, userdata, percentage_message): # Displays the percentage of how full the room is
     percentage_payload = str(percentage_message.payload, "utf-8")

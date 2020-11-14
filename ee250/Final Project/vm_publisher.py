@@ -59,13 +59,13 @@ if __name__ == '__main__':
     client.connect(host="eclipse.usc.edu", port=11000, keepalive=60) # Connecting to USC's MQTT server
     client.loop_start()
 
+    time.sleep(2) # Allowing the connection to print first before the menu!
     key = ""
     menu_text = "\nEnter the letter corresponding to the settings you wish to apply!\nn: Reset room to non-custom mode\nm: Set room to Movie\np: Set room to Party Mood\nc: Set room to Conference Mood\nr: Set room to Relaxing Mood\nx: Change maximum capacity"
     # Sorry for the long text! Python doesn't allow me to wrap around
 
     while True:
         if menu:
-            time.sleep(1)
             print(menu_text)
             menu = 0
         
