@@ -10,6 +10,7 @@ import grove_rgb_lcd
 LCD_needs_update = 0
 mood = "No Custom Mood"
 max_people = 10
+sound_buzzer = 0
 
 buzzer_port = 8 # D8
 ultrasonic_port = 7 # D7
@@ -23,7 +24,6 @@ grovepi.pinMode(rled_port,"OUTPUT")
 grovepi.pinMode(bled_port,"OUTPUT")
 grovepi.pinMode(gled_port,"OUTPUT")
 
-lock = threading.Lock()
 
 def no_custom_mood(num_people):
     global max_people
@@ -91,6 +91,19 @@ def maxPeople(client, userdata, max_message):
     max_people = int(mex_message.payload, "utf-8")
 
 
+def buzzer_beep(clock, time_entered):
+    global buzzer_port
+    global sound_buzzer
+    if (time_entered > 40) * (clock < 10): #In case clock was set to 0 before the buzzer finished beeping
+        clock = clock + 50
+    if (clock >= time_entered) * (clock < time_entered + 2) + (clock >= time_entered + 4) * (clock < time_entered + 6):
+        grovepi.digitalWrite(buzzer_port, 1)
+    else:
+        grovepi.digitalWrite(buzzer_port, 0)
+    if (time_entered + 6) == clock:
+        sound_buzzer = 0
+
+
 def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
 
@@ -126,11 +139,15 @@ if __name__ == '__main__':
     time_blocked = 0
     people = 0
     rotary_held = 0
+    entered_time = 0
 
 while True:
     if clock == 50: # Publish every 0.1 x 50 = 5 seconds
         clock = 0
         client.publish("chenjosh/people", str(people))
+        percent = str((float(people) /  max_people) * 100) + "%"
+        client.publish("chenjosh/percentage", percent)
+        client.publish("chenjosh/currentMood", str(mood))
         #publish
 
 
@@ -152,6 +169,8 @@ while True:
         people += 1
         time_blocked = 0
         LCD_needs_update = 1
+        sound_buzzer = 1
+        entered_time = clock
     else:
         time_blocked = 0 # If not, then we don't count as someone went through the doorway.
 
@@ -171,7 +190,10 @@ while True:
     if LCD_needs_update != 0:
         update_LCD(people)
         LCD_needs_update = 0
+    
 
+    if sound_buzzer:
+        buzzer_beep(clock, entered_time)
 
 
     clock += 1
