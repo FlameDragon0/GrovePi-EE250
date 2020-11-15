@@ -149,7 +149,7 @@ if __name__ == '__main__':
     entered_time = 0
 
 while True:
-    if clock == 50: # Publish every 0.1 x 50 = 5 seconds
+    if clock == 10: # Publish every 0.05 x 100 = 5 seconds
         clock = 0
         client.publish("chenjosh/people", str(people))
         percent = str((float(people) /  max_people) * 100) + "%"
@@ -164,8 +164,9 @@ while True:
 
 
     # Reads the values from the ultrasonic and rotary encoder (which should be a button)
-    ultrasonic_value = grovepi.ultrasonicRead(ultrasonic_port)
-    rotary_value = grovepi.analogRead(rotary_port)
+    ultrasonic_value = grovepi.ultrasonicRead(ultrasonic_port) # Reads every 50ms
+    if (clock % 2) == 0:
+        rotary_value = grovepi.analogRead(rotary_port) # Reads every 100ms because Analogue can't read too fast or else it will cause some problems
 
 
     if rotary_value > 0: # "Button" has been pressed
@@ -179,7 +180,7 @@ while True:
 
     if int(ultrasonic_value) < 70: # If something is less than 70cm away from the ultrasonic ranger, then something must be going through the door
         time_blocked += 1
-    elif time_blocked > 1: # If something blocks the doorway for 0.2s or more, then we assume that a person did go through
+    elif time_blocked > 2: # If something blocks the doorway for 0.15s or more, then we assume that a person did go through
         people += 1
         time_blocked = 0
         LCD_needs_update = 1
@@ -213,8 +214,8 @@ while True:
         buzzer_beep(clock, entered_time)
 
 
-    #Increments clock every 0.1 seconds
+    #Increments clock every 50ms
     clock += 1
-    time.sleep(0.1) # Sleep for 100ms
+    time.sleep(0.05) # Sleep for 50ms
 
 
