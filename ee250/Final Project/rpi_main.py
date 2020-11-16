@@ -57,7 +57,7 @@ def custom_brightness_mood(brightness): # all 3 leds gets turned on but their br
 
 def party_mood(clock): # three leds start flashing in an fun "party style" pattern!
     global rled_port, bled_port, gled_port
-    if (clock < 2) + (clock >= 8) * (clock < 10) + (clock >= 164) * (clock < 18):
+    if (clock < 2) + (clock >= 8) * (clock < 10) + (clock >= 16) * (clock < 18):
         grovepi.digitalWrite(gled_port, 1)
         grovepi.digitalWrite(bled_port, 0)
         grovepi.digitalWrite(rled_port, 0)
@@ -196,7 +196,7 @@ while True:
     elif mood == "Movie Mood":
         custom_brightness_mood(31)
     elif mood == "Party Mood":
-        party_mood(clock)
+        party_mood(clock/2) # I sent clock/2 because, in the function, I originally had it running for a clock that ticks every 100ms
     elif mood == "Conference Mood":
         custom_brightness_mood(255)
     elif mood == "Relaxing Mood":
