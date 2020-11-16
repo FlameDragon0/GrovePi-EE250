@@ -149,7 +149,7 @@ if __name__ == '__main__':
     entered_time = 0
 
 while True:
-    if clock == 10: # Publish every 0.05 x 100 = 5 seconds
+    if clock == 100: # Publish every 0.05 x 100 = 5 seconds
         clock = 0
         client.publish("chenjosh/people", str(people))
         percent = str((float(people) /  max_people) * 100) + "%"
